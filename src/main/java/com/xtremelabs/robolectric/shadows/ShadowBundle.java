@@ -116,6 +116,11 @@ public class ShadowBundle {
     public void putParcelable(String key, Parcelable value) {
         map.put(key, value);
     }
+    
+    @Implementation
+    public void putParcelableArrayList(String key, ArrayList<? extends Parcelable> value) {
+        map.put(key, value);
+    }
 
     @Implementation
     public Parcelable getParcelable(String key) {
@@ -126,7 +131,12 @@ public class ShadowBundle {
     public ArrayList<Parcelable> getParcelableArrayList(String key) {
     	return (ArrayList<Parcelable>)map.get(key);
     }
-    
+
+    @Implementation
+    public ArrayList<String> getStringArrayList(String key) {
+        return (ArrayList<String>) map.get(key);
+    }
+
     @Implementation
     public void putAll(Bundle bundle) {
     	map.putAll(((ShadowBundle) Robolectric.shadowOf_(bundle)).map);

@@ -17,6 +17,7 @@ import com.xtremelabs.robolectric.util.TestRunnable;
 import com.xtremelabs.robolectric.util.Transcript;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import static com.xtremelabs.robolectric.Robolectric.shadowOf;
@@ -243,6 +244,14 @@ public class ViewTest {
         assertThat(listener.wasStartCalled, equalTo(true));
         assertThat(listener.wasRepeatCalled, equalTo(false));
         assertThat(listener.wasEndCalled, equalTo(true));
+    }
+    
+    @Test
+    public void shouldfindViewWithTag() {
+    	String tagged = "tagged";
+    	String tagged2 = "tagged";
+    	view.setTag(tagged);
+    	assertThat(view.findViewWithTag(tagged2),sameInstance(view));
     }
 
     @Test

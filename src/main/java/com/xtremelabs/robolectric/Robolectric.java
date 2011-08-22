@@ -29,7 +29,9 @@ import android.content.res.Resources;
 import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteProgram;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
@@ -52,6 +54,7 @@ import android.media.MediaRecorder;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Looper;
@@ -102,6 +105,8 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
+import android.widget.ViewAnimator;
+import android.widget.ViewFlipper;
 import android.widget.ZoomButtonsController;
 import com.xtremelabs.robolectric.bytecode.RobolectricInternals;
 import com.xtremelabs.robolectric.bytecode.ShadowWrangler;
@@ -167,10 +172,11 @@ public class Robolectric {
                 ShadowAbsListView.class,
                 ShadowAbsoluteLayout.class,
                 ShadowAbsSeekBar.class,
-                ShadowActivityGroup.class,
                 ShadowAbsSpinner.class,
                 ShadowAbstractCursor.class,
                 ShadowActivity.class,
+                ShadowActivityInfo.class,
+                ShadowActivityGroup.class,
                 ShadowActivityManager.class,
                 ShadowAdapterView.class,
                 ShadowAddress.class,
@@ -214,6 +220,7 @@ public class Robolectric {
                 ShadowCookieSyncManager.class,
                 ShadowCountDownTimer.class,
                 ShadowCursorAdapter.class,
+                ShadowDatabaseUtils.class,
                 ShadowDateFormat.class,
                 ShadowDefaultRequestDirector.class,
                 ShadowDisplay.class,
@@ -234,7 +241,6 @@ public class Robolectric {
                 ShadowImageView.class,
                 ShadowInputMethodManager.class,
                 ShadowIntent.class,
-                ShadowIntent.class,
                 ShadowIntentFilter.class,
                 ShadowIntentFilterAuthorityEntry.class,
                 ShadowItemizedOverlay.class,
@@ -249,6 +255,7 @@ public class Robolectric {
                 ShadowListView.class,
                 ShadowLocation.class,
                 ShadowLocationManager.class,
+                ShadowLogger.class,
                 ShadowLooper.class,
                 ShadowMapController.class,
                 ShadowMapActivity.class,
@@ -301,9 +308,11 @@ public class Robolectric {
                 ShadowSimpleCursorAdapter.class,
                 ShadowShapeDrawable.class,
                 ShadowSpannableStringBuilder.class,
+                ShadowSQLiteProgram.class,
                 ShadowSQLiteDatabase.class,
                 ShadowSQLiteCursor.class,
                 ShadowSQLiteOpenHelper.class,
+                ShadowSQLiteStatement.class,
                 ShadowSQLiteQueryBuilder.class,
                 ShadowSslErrorHandler.class,
                 ShadowSurfaceView.class,
@@ -319,7 +328,9 @@ public class Robolectric {
                 ShadowURLSpan.class,
                 ShadowVideoView.class,
                 ShadowView.class,
+                ShadowViewAnimator.class,
                 ShadowViewGroup.class,
+                ShadowViewFlipper.class,
                 ShadowViewStub.class,
                 ShadowWebSettings.class,
                 ShadowWebView.class,
@@ -501,6 +512,14 @@ public class Robolectric {
         return (ShadowView) shadowOf_(instance);
     }
 
+    public static ShadowViewFlipper shadowOf(ViewFlipper instance) {
+        return (ShadowViewFlipper) shadowOf_(instance);
+    }
+
+    public static ShadowViewAnimator shadowOf(ViewAnimator instance) {
+        return (ShadowViewAnimator) shadowOf_(instance);
+    }
+
     public static ShadowColorDrawable shadowOf(ColorDrawable instance) {
         return (ShadowColorDrawable) shadowOf_(instance);
     }
@@ -573,6 +592,10 @@ public class Robolectric {
         return (ShadowResources) shadowOf_(instance);
     }
 
+    public static ShadowBundle shadowOf(Bundle instance) {
+        return (ShadowBundle) shadowOf_(instance);
+    }
+
     public static ShadowResultReceiver shadowOf(ResultReceiver instance) {
         return (ShadowResultReceiver) shadowOf_(instance);
     }
@@ -595,6 +618,14 @@ public class Robolectric {
 
     public static ShadowGeocoder shadowOf(Geocoder instance) {
         return (ShadowGeocoder) shadowOf_(instance);
+    }
+
+    public static ShadowSQLiteStatement shadowOf(SQLiteStatement other) {
+        return (ShadowSQLiteStatement) Robolectric.shadowOf_(other);
+    }
+    
+    public static ShadowSQLiteProgram shadowOf(SQLiteProgram other) {
+        return (ShadowSQLiteProgram) Robolectric.shadowOf_(other);
     }
 
     public static ShadowSQLiteDatabase shadowOf(SQLiteDatabase other) {
@@ -1000,7 +1031,6 @@ public class Robolectric {
     public static String visualize(Bitmap bitmap) {
         return shadowOf(bitmap).getDescription();
     }
-
     /**
      * Reflection helper methods.
      */
