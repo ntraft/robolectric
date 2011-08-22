@@ -66,10 +66,12 @@ public class ShadowAsyncTask<Params, Progress, Result> {
         return future.cancel(mayInterruptIfRunning);
     }
 
+    @Implementation
     public Result get() throws InterruptedException, ExecutionException {
         return future.get();
     }
 
+    @Implementation
     public Result get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
         return future.get(timeout, unit);
     }
